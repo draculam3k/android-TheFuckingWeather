@@ -11,6 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
 import android.view.Menu;
 import android.widget.TextView;
 
@@ -50,9 +51,9 @@ public class MainActivity extends Activity {
 			
 			setContentView(R.layout.activity_result);
 			
-			((TextView) findViewById(R.id.degrees)).setText(tfw.getTemperature() + "\u00B0!?");
-			((TextView) findViewById(R.id.remark)).setText(tfw.getRemark());
-			((TextView) findViewById(R.id.flavor)).setText(tfw.getFlavor());
+			((TextView) findViewById(R.id.degrees)).setText(tfw.getTemperature() + "\u00B0?!");
+			((TextView) findViewById(R.id.remark)).setText(Html.fromHtml(tfw.getRemark()));
+			((TextView) findViewById(R.id.flavor)).setText(Html.fromHtml(tfw.getFlavor()));
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
