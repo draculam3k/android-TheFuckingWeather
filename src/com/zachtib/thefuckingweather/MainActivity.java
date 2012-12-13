@@ -19,6 +19,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,7 +30,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -47,7 +47,13 @@ public class MainActivity extends Activity {
 			TheFuckingWeather result = new TheFuckingWeather(null, null, null);
 
 			HttpClient client = new DefaultHttpClient();
-			HttpGet get = new HttpGet(THE_FUCKING_URL + zip);
+			String url = THE_FUCKING_URL + zip;
+			if (PreferenceManager.getDefaultSharedPreferences(
+					getApplicationContext()).getBoolean("pref_celsius", false)) {
+				url += "&unit=c";
+			}
+
+			HttpGet get = new HttpGet(url);
 			HttpResponse response = null;
 			try {
 				response = client.execute(get);
@@ -119,15 +125,17 @@ public class MainActivity extends Activity {
 		if (location == null) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(R.string.couldnt_determine_location)
-					.setTitle(R.string.dialog_alert).setNeutralButton(R.string.dialog_alert,
-					new DialogInterface.OnClickListener() {
+					.setTitle(R.string.dialog_alert)
+					.setNeutralButton(R.string.dialog_alert,
+							new DialogInterface.OnClickListener() {
 
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.dismiss();
 
-						}
-					});
+								}
+							});
 			AlertDialog dialog = builder.create();
 			dialog.show();
 			return;
@@ -164,7 +172,8 @@ public class MainActivity extends Activity {
 			getTheFuckingWeather();
 			return true;
 		case R.id.menu_settings:
-			MainActivity.this.startActivity(new Intent(MainActivity.this, SettingsActivity.class));
+			MainActivity.this.startActivity(new Intent(MainActivity.this,
+					SettingsActivity.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);

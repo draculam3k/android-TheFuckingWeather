@@ -1,7 +1,6 @@
 package com.zachtib.thefuckingweather;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
