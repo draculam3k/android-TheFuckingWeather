@@ -117,9 +117,8 @@ public class MainActivity extends Activity {
 
 		if (location == null) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("Couldn't determine your fucking location.")
-					.setTitle("Fuck!");
-			builder.setNeutralButton("Dammit!",
+			builder.setMessage(R.string.couldnt_determine_location)
+					.setTitle(R.string.dialog_alert).setNeutralButton(R.string.dialog_alert,
 					new DialogInterface.OnClickListener() {
 
 						@Override
