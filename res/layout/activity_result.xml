@@ -10,10 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="69dp"
-        android:text="50 !?"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="80sp" />
+        android:layout_marginTop="30dp"
+        android:text=""
+        android:textSize="100sp" />
 
     <TextView
         android:id="@+id/remark"
@@ -21,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="Medium Text"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -30,8 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="94dp"
-        android:text="Small Text"
+        android:layout_marginBottom="20dp"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>
