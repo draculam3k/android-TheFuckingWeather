@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -116,7 +117,17 @@ public class MainActivity extends Activity {
 
 		if (location == null) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage("Couldn't determine your fucking location.").setTitle("Fuck!");
+			builder.setMessage("Couldn't determine your fucking location.")
+					.setTitle("Fuck!");
+			builder.setNeutralButton("Dammit!",
+					new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+
+						}
+					});
 			AlertDialog dialog = builder.create();
 			dialog.show();
 			return;
