@@ -24,7 +24,9 @@ import android.content.Context;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -92,7 +94,6 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		setContentView(R.layout.activity_main);
 		getTheFuckingWeather();
 	}
 
@@ -104,6 +105,8 @@ public class MainActivity extends Activity {
 	}
 
 	public void getTheFuckingWeather() {
+		setContentView(R.layout.activity_main);
+
 		LocationManager lmngr = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
 		Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -135,4 +138,16 @@ public class MainActivity extends Activity {
 				.getFlavor()));
 	}
 
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_refresh:
+			getTheFuckingWeather();
+			return true;
+		case R.id.menu_settings:
+			Toast.makeText(getApplicationContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 }
