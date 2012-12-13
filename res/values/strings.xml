@@ -11,5 +11,5 @@
     <string name="dialog_cancel">Fuck No!</string>
     <string name="couldnt_determine_location">I don\'t know where the fuck you are.</string>
     <string name="not_implemented"></string>
-
+	<string name="pref_celsius">I want fucking Celsius</string>
 </resources>

@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -163,8 +164,7 @@ public class MainActivity extends Activity {
 			getTheFuckingWeather();
 			return true;
 		case R.id.menu_settings:
-			Toast.makeText(getApplicationContext(), "Not yet implemented",
-					Toast.LENGTH_SHORT).show();
+			MainActivity.this.startActivity(new Intent(MainActivity.this, SettingsActivity.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
