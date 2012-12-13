@@ -20,6 +20,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.text.Html;
 import android.util.Log;
@@ -113,6 +114,14 @@ public class MainActivity extends Activity {
 		Location location = lmngr
 				.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
+		if (location == null) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setMessage("Couldn't determine your fucking location.").setTitle("Fuck!");
+			AlertDialog dialog = builder.create();
+			dialog.show();
+			return;
+		}
+
 		Address address = null;
 
 		try {
@@ -144,7 +153,8 @@ public class MainActivity extends Activity {
 			getTheFuckingWeather();
 			return true;
 		case R.id.menu_settings:
-			Toast.makeText(getApplicationContext(), "Not yet implemented", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "Not yet implemented",
+					Toast.LENGTH_SHORT).show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
