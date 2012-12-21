@@ -126,7 +126,7 @@ public class MainActivity extends Activity {
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setMessage(R.string.couldnt_determine_location)
 					.setTitle(R.string.dialog_alert)
-					.setNeutralButton(R.string.dialog_alert,
+					.setNeutralButton(R.string.dialog_dismiss,
 							new DialogInterface.OnClickListener() {
 
 								@Override
