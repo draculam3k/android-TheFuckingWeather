@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Locale;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -44,7 +45,7 @@ public class MainActivity extends Activity {
 			String zip = params[0];
 			Log.d(TAG, "Got a request for " + zip);
 
-			TheFuckingWeather result = new TheFuckingWeather(null, null, null);
+			TheFuckingWeather result = null;
 
 			HttpClient client = new DefaultHttpClient();
 			String url = THE_FUCKING_URL + zip;
@@ -55,8 +56,14 @@ public class MainActivity extends Activity {
 
 			HttpGet get = new HttpGet(url);
 			HttpResponse response = null;
+			String html = "";
+
 			try {
 				response = client.execute(get);
+				if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+					Log.d(TAG, "Http error status");
+					return null;
+				}
 
 				BufferedReader in = new BufferedReader(new InputStreamReader(
 						response.getEntity().getContent()));
@@ -67,23 +74,27 @@ public class MainActivity extends Activity {
 				while ((line = in.readLine()) != null) {
 					sb.append(line + NL);
 				}
+				html = sb.toString();
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+				return null;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
 
-				String html = sb.toString();
-
-				Document doc = Jsoup.parse(html);
-
+			Document doc = Jsoup.parse(html);
+			try {
 				String temp = doc.getElementsByClass("temperature").first()
 						.html();
 				String remark = doc.getElementsByClass("remark").first().html();
 				String flavor = doc.getElementsByClass("flavor").first().html();
 
 				result = new TheFuckingWeather(temp, remark, flavor);
-			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (NullPointerException e) {
+				// Parsing failure. getElementsByClass returned empty
+				Log.e(TAG, "Parse failure");
+				return null;
 			}
 
 			return result;
@@ -91,7 +102,12 @@ public class MainActivity extends Activity {
 
 		@Override
 		protected void onPostExecute(TheFuckingWeather result) {
-			showTheFuckingWeather(result);
+			setContentView(R.layout.activity_result);
+			if (result == null) {
+				showErrorDialog(R.string.connection_error);
+			} else {
+				showTheFuckingWeather(result);
+			}
 		}
 	}
 
@@ -113,6 +129,25 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	private void showErrorDialog(int stringid)
+	{
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.couldnt_determine_location)
+				.setTitle(R.string.dialog_alert)
+				.setNeutralButton(R.string.dialog_dismiss,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+
+							}
+						});
+		AlertDialog dialog = builder.create();
+		dialog.show();
+	}
+
 	public void getTheFuckingWeather() {
 		setContentView(R.layout.activity_main);
 
@@ -121,23 +156,9 @@ public class MainActivity extends Activity {
 		Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 		Location location = lmngr
 				.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
 		if (location == null) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setMessage(R.string.couldnt_determine_location)
-					.setTitle(R.string.dialog_alert)
-					.setNeutralButton(R.string.dialog_dismiss,
-							new DialogInterface.OnClickListener() {
+			showErrorDialog(R.string.couldnt_determine_location);
 
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									dialog.dismiss();
-
-								}
-							});
-			AlertDialog dialog = builder.create();
-			dialog.show();
 			return;
 		}
 
@@ -156,8 +177,6 @@ public class MainActivity extends Activity {
 	}
 
 	public void showTheFuckingWeather(TheFuckingWeather weather) {
-		setContentView(R.layout.activity_result);
-
 		((TextView) findViewById(R.id.degrees)).setText(Html.fromHtml("<i>"
 				+ weather.getTemperature() + "\u00B0?!</i>"));
 		((TextView) findViewById(R.id.remark)).setText(Html.fromHtml(weather
